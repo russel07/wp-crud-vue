@@ -1,6 +1,6 @@
 <template>
 
-  HelloWorld
+  Hello World
 </template>
 
 <script>
