@@ -42,6 +42,8 @@ class Plugin {
     public function define_admin_hooks(){
         $admin = new PluginAdmin($this->plugin_name, $this->plugin_version);
         $this->plugin_loader->add_action( 'admin_menu', $admin, 'products_admin_menu' );
+        $this->plugin_loader->add_action('admin_init', $admin, 'enqueue_style');
+        $this->plugin_loader->add_action('admin_init', $admin, 'enqueue_scripts');
     }
 
     public function init(){
