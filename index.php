@@ -33,3 +33,8 @@ use Russel\RusCrud\Plugin;
 
 $plugin = new Plugin();
 $plugin->init();
+
+function jp_doVueApp ( $atts=[] ) {
+    return '<div id="app"></div>';
+}
+add_shortcode( 'jp-vue-app', 'jp_doVueApp' );
