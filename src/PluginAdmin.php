@@ -32,6 +32,7 @@ class PluginAdmin
 
     public function enqueue_style(){
         wp_enqueue_style( $this->plugin_name, plugin_dir_url( PLUGIN_FILE_URL ) . 'public/css/style.css', array(), $this->plugin_version, 'all' );
+        wp_enqueue_style( $this->plugin_name.'bootstrap', plugin_dir_url( PLUGIN_FILE_URL ) . 'public/css/bootstrap.min.css', array(), $this->plugin_version, 'all' );
     }
 
     public function enqueue_scripts(){
@@ -41,5 +42,14 @@ class PluginAdmin
         wp_enqueue_script( $this->plugin_name.'vue' );
         wp_enqueue_script( $this->plugin_name.'main' );
 
+    }
+
+    public function get_products(){
+        global $wpdb;
+        $table_name = $wpdb->prefix . PRODUCT_TABLE;
+        $this->items = $wpdb->get_results("SELECT * FROM $table_name", ARRAY_A);
+
+        echo json_encode($this->items,JSON_PRETTY_PRINT);
+        die();
     }
 }

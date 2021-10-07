@@ -26,7 +26,7 @@
 
 
 const PLUGIN_FILE_URL = __FILE__;
-const PRODUCT_TABLE = 'rus_products';
+const PRODUCT_TABLE = 'products';
 
 require_once 'vendor/autoload.php';
 use Russel\RusCrud\Plugin;

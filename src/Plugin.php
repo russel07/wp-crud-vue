@@ -44,6 +44,7 @@ class Plugin {
         $this->plugin_loader->add_action( 'admin_menu', $admin, 'products_admin_menu' );
         $this->plugin_loader->add_action('admin_init', $admin, 'enqueue_style');
         $this->plugin_loader->add_action('admin_init', $admin, 'enqueue_scripts');
+        $this->plugin_loader->add_action('wp_ajax_get_products', $admin, 'get_products');
     }
 
     public function init(){
