@@ -36,7 +36,7 @@ class PluginAdmin
 
     public function enqueue_scripts(){
         wp_register_script($this->plugin_name.'main', plugin_dir_url( PLUGIN_FILE_URL ) . 'public/js/main.js', array(), $this->plugin_version, 'all' );
-        wp_register_script($this->plugin_name.'vue', plugin_dir_url( PLUGIN_FILE_URL ) . 'dist/js/app.js', array(), $this->plugin_version, 'all' );
+        wp_register_script($this->plugin_name.'vue', plugin_dir_url( PLUGIN_FILE_URL ) . 'admin/assets/vue.js', array(), $this->plugin_version, true );
 
         wp_enqueue_script( $this->plugin_name.'vue' );
         wp_enqueue_script( $this->plugin_name.'main' );
