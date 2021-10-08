@@ -18,7 +18,7 @@
         <td>{{item.price}}</td>
         <td>
           <button class="btn btn-sm btn-outline-warning">Edit</button>&nbsp;
-          <button class="ml-2 btn btn-sm btn-outline-danger">Delete</button>
+          <button class="ml-2 btn btn-sm btn-outline-danger" @click="deleteProduct(item.id)">Delete</button>
         </td>
       </tr>
       </tbody>
@@ -54,10 +54,36 @@ export default {
           root.products = data;
         },
         error : function(request,error)
-        {console.log("error");
+        {
             console.log(error);
         }
       });
+    },
+    deleteProduct: function (id){
+      if(confirm('Are you sure you want to delete?')){
+        let  root = this;
+        let data = {
+          id: id,
+          action: 'delete_product'
+        }
+        $.ajax({
+          url: ajaxurl,
+          type: 'POST',
+          dataType: 'json',
+          data: data,
+          beforeSend: function () {
+
+          },
+          success : function(data) {
+            let index = root.products.findIndex(row => row.id === id);
+            root.products.splice(index, 1);
+          },
+          error : function(request,error)
+          {
+            console.log(error);
+          }
+        });
+      }
     }
   }
 }

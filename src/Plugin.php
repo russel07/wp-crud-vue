@@ -45,6 +45,8 @@ class Plugin {
         $this->plugin_loader->add_action('admin_init', $admin, 'enqueue_style');
         $this->plugin_loader->add_action('admin_init', $admin, 'enqueue_scripts');
         $this->plugin_loader->add_action('wp_ajax_get_products', $admin, 'get_products');
+        $this->plugin_loader->add_action('wp_ajax_save_product', $admin, 'save_product');
+        $this->plugin_loader->add_action('wp_ajax_delete_product', $admin, 'delete_product');
     }
 
     public function init(){

@@ -52,4 +52,68 @@ class PluginAdmin
         echo json_encode($this->items,JSON_PRETTY_PRINT);
         die();
     }
+
+    public function save_product(){
+        global $wpdb;
+        $table_name = $wpdb->prefix.PRODUCT_TABLE;
+
+        $default = array(
+            'id' => 0,
+            'product_title' => '',
+            'product_description' => '',
+            'price' => 0.0,
+        );
+
+        $item = shortcode_atts($default, $_REQUEST);
+        $validate = $this->validate_product_form_data($item);
+        if($validate){
+            $result= $wpdb->insert($table_name, $item);
+            $item['id'] = $wpdb->insert_id;
+            echo json_encode(array(
+                'status' => true,
+                'message' => $item
+            ),JSON_PRETTY_PRINT);
+            die();
+        }else{
+            echo json_encode(array(
+                'status' => false,
+                'message' => $validate
+            ),JSON_PRETTY_PRINT);
+            die();
+        }
+    }
+
+    public function delete_product(){
+        global $wpdb;
+        $table_name = $wpdb->prefix.PRODUCT_TABLE;
+
+        if(isset($_REQUEST['id']) && $_REQUEST['id']){
+            $id = $_REQUEST['id'];
+            $wpdb->delete($table_name, array('id' => $id));
+
+            wp_send_json(array(
+                'status' => true,
+                'message' => 'Invalid request submitted'
+            ));
+            wp_die();
+        }else{
+            wp_send_json(array(
+                'status' => false,
+                'message' => 'Invalid request submitted'
+            ));
+            wp_die();
+        }
+    }
+
+    function validate_product_form_data($item){
+        $messages = array();
+
+        if (empty($item['product_title'])) $messages[] = __('Product title can not be blank', 'custom_product_crud');
+        if (empty($item['product_description'])) $messages[] = __('Product Description can not be blank', 'custom_product_crud');
+        if (empty($item['price'])) $messages[] = __('Price can not be blank', 'custom_product_crud');
+        if (!is_numeric($item['price'])) $messages[] = __('Product price should be a valid number', 'custom_product_crud');
+
+        if (empty($messages)) return true;
+        return implode('<br />', $messages);
+    }
 }

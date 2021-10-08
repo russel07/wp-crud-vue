@@ -25,3 +25,5 @@ Homestead.json
 .phpunit.result.cache
 
 admin/assets/vue.js
+package-lock.json
+mix-manifest.json
