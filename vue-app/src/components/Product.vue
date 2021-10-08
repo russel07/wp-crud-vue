@@ -17,7 +17,7 @@
         <td>{{item.product_description}}</td>
         <td>{{item.price}}</td>
         <td>
-          <button class="btn btn-sm btn-outline-warning">Edit</button>&nbsp;
+          <a class="btn btn-sm btn-outline-warning" :href="getEditLink(item.id)">Edit</a>&nbsp;
           <button class="ml-2 btn btn-sm btn-outline-danger" @click="deleteProduct(item.id)">Delete</button>
         </td>
       </tr>
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'Product',
   data(){
@@ -38,6 +39,9 @@ export default {
     this.getProducts();
   },
   methods: {
+    getEditLink: function (id){
+      return '#/edit-product/'+id;
+    },
     getProducts: function(){
       let root = this;
       $.ajax({
@@ -77,10 +81,16 @@ export default {
           success : function(data) {
             let index = root.products.findIndex(row => row.id === id);
             root.products.splice(index, 1);
+
+            root.$toast.show('Success! Product deleted successfully', {
+              type: 'success'
+            });
           },
           error : function(request,error)
           {
-            console.log(error);
+            root.$toast.show('Error! Something went wrong, please try later', {
+              type: 'error'
+            });
           }
         });
       }

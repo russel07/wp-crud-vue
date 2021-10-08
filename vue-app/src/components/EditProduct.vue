@@ -1,6 +1,7 @@
 <template>
+
   <div class="wrap">
-    <h1 class="wp-heading-inline">Add Poduct</h1>
+    <h1 class="wp-heading-inline">Edit Poduct</h1>
     <a href="#/" class="btn btn-success">Back to list</a>
 
     <div class="row pt-5">
@@ -43,7 +44,7 @@
         </div>
 
         <div class="form-group text-center">
-          <button type="button" class="btn btn-outline-primary" id="save_product" @click="saveProduct">Save</button>
+          <button type="button" class="btn btn-outline-primary" id="save_product" @click="saveProduct">Update</button>
         </div>
 
       </div>
@@ -52,48 +53,86 @@
 </template>
 
 <script>
-  import router from '../router/router.js'
+  import router from '../router/router.js';
   export default {
-    name: 'AddProduct',
-    data() {
+    data(){
       return {
+        id: '',
         product_title: '',
         product_description: '',
         price: '',
         errors: {
           product_title: false,
           product_description: false,
-          product_price: false
+          price: false
         },
-        error: false,
+        error: false
       }
     },
+    created() {
+      this.getProduct();
+    },
     methods: {
+      getProduct: function (){
+        let id = this.$route.params.productId;
+        let root = this;
+        let data = {
+          id: id,
+          action: 'get_product'
+        }
+        $.ajax({
+          url: ajaxurl,
+          type: 'GET',
+          dataType: 'json',
+          data: data,
+          beforeSend: function () {
+
+          },
+          success : function(response) {
+            if(response.status){
+              let product = response.data;
+
+              root.id = product.id
+              root.product_title = product.product_title
+              root.product_description = product.product_description
+              root.price = product.price
+            }
+
+          },
+          error : function(request,error)
+          {
+            root.$toast.show('Error! Something went wrong, please try later', {
+              type: 'error'
+            });
+          }
+        });
+      },
+
       saveProduct(){
         let root = this;
-        if(this.product_title === ''){console.log("product_title blank");
+        if(this.product_title === ''){
           this.errors.product_price = true;
           this.error = true;
         }
-        else if(this.product_description === ''){console.log("description blank");
+        else if(this.product_description === ''){
           this.errors.product_description == true;
           this.error = true;
         }
-        else if(this.price === ''){console.log("price blank");
+        else if(this.price === ''){
           this.errors.price == true;
           this.error = true;
         }else{
           this.error = false;
         }
-
+        console.log(this.error)
         if(!this.error){
           let data = {
+            id: this.id,
             product_title: this.product_title,
             product_description: this.product_description,
             price: this.price,
             action: 'save_product'
           }
-          console.log(data);
 
           $.ajax({
             url: ajaxurl,
@@ -104,7 +143,7 @@
 
             },
             success : function(data) {
-              root.$toast.show('Success! Product addedd successfully', {
+              root.$toast.show('Success! Product updated successfully', {
                 type: 'success'
               });
               router.push({name: 'Product'})

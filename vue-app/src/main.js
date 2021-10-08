@@ -1,5 +1,11 @@
 import { createApp } from 'vue'
+import Toaster from '@meforma/vue-toaster';
+
 import App from './App.vue'
 import router from './router/router.js';
 
-createApp(App).use(router).mount('#vue-app')
+const app = createApp(App);
+app.use(router);
+app.use(Toaster);
+
+app.mount('#vue-app');

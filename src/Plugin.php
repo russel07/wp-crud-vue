@@ -47,6 +47,7 @@ class Plugin {
         $this->plugin_loader->add_action('wp_ajax_get_products', $admin, 'get_products');
         $this->plugin_loader->add_action('wp_ajax_save_product', $admin, 'save_product');
         $this->plugin_loader->add_action('wp_ajax_delete_product', $admin, 'delete_product');
+        $this->plugin_loader->add_action('wp_ajax_get_product', $admin, 'get_product');
     }
 
     public function init(){

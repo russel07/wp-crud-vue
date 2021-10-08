@@ -53,6 +53,28 @@ class PluginAdmin
         die();
     }
 
+    public function get_product(){
+        global $wpdb;
+        $table_name = $wpdb->prefix.PRODUCT_TABLE;
+
+        if(isset($_REQUEST['id']) && $_REQUEST['id']) {
+            $id = $_REQUEST['id'];
+            $result = $wpdb->get_row("select * from $table_name where id =  $id");
+
+            wp_send_json(array(
+                'status' => true,
+                'data' => $result
+            ));
+            wp_die();
+        }else{
+            wp_send_json(array(
+                'status' => false,
+                'message' => 'Invalid request submitted'
+            ));
+            wp_die();
+        }
+    }
+
     public function save_product(){
         global $wpdb;
         $table_name = $wpdb->prefix.PRODUCT_TABLE;
@@ -67,11 +89,15 @@ class PluginAdmin
         $item = shortcode_atts($default, $_REQUEST);
         $validate = $this->validate_product_form_data($item);
         if($validate){
-            $result= $wpdb->insert($table_name, $item);
-            $item['id'] = $wpdb->insert_id;
+            if($item['id']){
+                $wpdb->update($table_name, $item, array('id'=> $item['id']));
+            }else {
+                $wpdb->insert($table_name, $item);
+                $item['id'] = $wpdb->insert_id;
+            }
             echo json_encode(array(
                 'status' => true,
-                'message' => $item
+                'data' => $item
             ),JSON_PRETTY_PRINT);
             die();
         }else{
