@@ -174,9 +174,11 @@ class PluginAdmin
     public function getProduct($atts){
         global $wpdb;
         $table_name = $wpdb->prefix.PRODUCT_TABLE;
-        $id = $atts['id'];
+        $id = isset($atts['id']) ? $atts['id']: '';
 
-        return $wpdb->get_results("select * from $table_name where id IN( $id)");
+        if($id)
+            return $wpdb->get_results("select * from $table_name where id IN( $id)");
+        else return $wpdb->get_results("select * from $table_name");
     }
 
 }

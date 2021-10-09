@@ -59,8 +59,6 @@ class Plugin {
 
     public function define_public_scripts(){
         $this->plugin_loader->add_action('init', $this, 'wp_crud_enqueue_style');
-        //wp_enqueue_style( 'RUSCRUDVUE_bootstrap_css', plugin_dir_url( PLUGIN_FILE_URL ) . 'public/css/bootstrap.min.css');
-        //wp_enqueue_style( 'RUSCRUDVUE_css', plugin_dir_url( PLUGIN_FILE_URL ) . 'public/css/style.css');
     }
 
     public function init(){
