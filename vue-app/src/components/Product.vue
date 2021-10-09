@@ -1,14 +1,16 @@
 <template>
-  <div class="wrap">
-    <h1 class="wp-heading-inline">Products</h1>
-    <a href="#/add-product" class="btn btn-success">Add Product</a>
-    <table class="wp-list-table widefat fixed striped table-view-list products">
+  <div class="card col-md-10 offset-1">
+    <div class=" mb-2">
+      <a href="#/add-product" class="btn btn-success">Add Product</a>
+    </div>
+    <table class="table table-bordered table-hover table-striped">
       <thead>
       <tr>
         <th>Product Title</th>
         <th>Product Description</th>
         <th>Product Price</th>
-        <th>Action</th>
+        <th>Short Code</th>
+        <th width="15%">Action</th>
       </tr>
       </thead>
       <tbody>
@@ -16,6 +18,9 @@
         <td>{{item.product_title}}</td>
         <td>{{item.product_description}}</td>
         <td>{{item.price}}</td>
+        <td style="width: 30%">
+          <input class="form-control" :value="getShortCode(item.id)" @click="copyToClipboard()">
+        </td>
         <td>
           <a class="btn btn-sm btn-outline-warning" :href="getEditLink(item.id)">Edit</a>&nbsp;
           <button class="ml-2 btn btn-sm btn-outline-danger" @click="deleteProduct(item.id)">Delete</button>
@@ -39,6 +44,9 @@ export default {
     this.getProducts();
   },
   methods: {
+    getShortCode(id){
+      return "[WPCRUDVUE id=\""+id+"\"]"
+    },
     getEditLink: function (id){
       return '#/edit-product/'+id;
     },

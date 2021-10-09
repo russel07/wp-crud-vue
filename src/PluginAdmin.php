@@ -142,4 +142,41 @@ class PluginAdmin
         if (empty($messages)) return true;
         return implode('<br />', $messages);
     }
+
+    public function rus_crud_shortcode(){
+        add_shortcode( 'WPCRUDVUE', array($this, 'ruscrud_shortcode') );
+    }
+
+    public function ruscrud_shortcode($atts = [], $content = null, $tag = ''){
+        $atts = array_change_key_case( (array) $atts, CASE_LOWER );
+
+        $rows = $this->getProduct($atts);
+        $o = "<div class='product-wrap row'>";
+        if(!empty($rows)) {
+            foreach ($rows as $row) {
+                $o .= "<div class='card m-2'><div class='card-header'><h3 class='card-title'>$row->product_title</h3></div>";
+                $o .= "<div class='card-body'><p>$row->product_description</p></div>";
+                $o .= "<div class='card-footer'>$row->price</div></div>";
+            }
+        }
+        else $o .= '<span>No product found</span>';
+        if ( ! is_null( $content ) ) {
+            // secure output by executing the_content filter hook on $content
+            $o .= apply_filters( 'the_content', $content );
+
+            // run shortcode parser recursively
+            $o .= do_shortcode( $content );
+        }
+        $o .= '</div>';
+        return $o;
+    }
+
+    public function getProduct($atts){
+        global $wpdb;
+        $table_name = $wpdb->prefix.PRODUCT_TABLE;
+        $id = $atts['id'];
+
+        return $wpdb->get_results("select * from $table_name where id IN( $id)");
+    }
+
 }

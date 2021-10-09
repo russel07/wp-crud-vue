@@ -15,6 +15,7 @@ class Plugin {
         $this->plugin_loader = new PluginLoader();
         $this->activateMe();
         $this->deactivateMe();
+        $this->define_public_scripts();
         $this->define_admin_hooks();
     }
 
@@ -48,6 +49,18 @@ class Plugin {
         $this->plugin_loader->add_action('wp_ajax_save_product', $admin, 'save_product');
         $this->plugin_loader->add_action('wp_ajax_delete_product', $admin, 'delete_product');
         $this->plugin_loader->add_action('wp_ajax_get_product', $admin, 'get_product');
+        $this->plugin_loader->add_action('init', $admin, 'rus_crud_shortcode');
+    }
+
+    public function wp_crud_enqueue_style(){
+        wp_enqueue_style( 'RUSCRUDVUE_bootstrap_css', plugin_dir_url( PLUGIN_FILE_URL ) . 'public/css/bootstrap.min.css');
+        wp_enqueue_style( 'RUSCRUDVUE_css', plugin_dir_url( PLUGIN_FILE_URL ) . 'public/css/style.css');
+    }
+
+    public function define_public_scripts(){
+        $this->plugin_loader->add_action('init', $this, 'wp_crud_enqueue_style');
+        //wp_enqueue_style( 'RUSCRUDVUE_bootstrap_css', plugin_dir_url( PLUGIN_FILE_URL ) . 'public/css/bootstrap.min.css');
+        //wp_enqueue_style( 'RUSCRUDVUE_css', plugin_dir_url( PLUGIN_FILE_URL ) . 'public/css/style.css');
     }
 
     public function init(){

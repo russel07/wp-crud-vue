@@ -1,7 +1,9 @@
 <template>
-  <div class="wrap">
-    <h1 class="wp-heading-inline">Add Poduct</h1>
-    <a href="#/" class="btn btn-success">Back to list</a>
+  <div class="card col-md-10 offset-1">
+    <div class="mb-2">
+      <a href="#/" class="btn btn-success">Back to list</a>
+    </div>
+
 
     <div class="row pt-5">
       <div class="col-md-12">
